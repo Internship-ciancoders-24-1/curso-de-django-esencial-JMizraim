@@ -10,3 +10,9 @@
 - Objeto request y response
 - Templates
 - Patrones de diseño
+
+## Modelos
+
+- MTV
+- ORM
+- Django admin
