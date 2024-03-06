@@ -4,3 +4,9 @@
 
 - Configuración del entorno de trabajo
 - Primer "Hello World!" en Django
+
+## Vistas
+
+- Objeto request y response
+- Templates
+- Patrones de diseño

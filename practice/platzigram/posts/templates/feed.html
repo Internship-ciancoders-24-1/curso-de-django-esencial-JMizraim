@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Posts</title>
+  </head>
+  <body>
+    <h1>Página de posts</h1>
+    <div>
+      {% for post in data %}
+      <article>
+        <h2>{{ post.name }}</h2>
+        <figure>
+            <img src="{{ post.picture }}" alt="imagen" />
+        </figure>
+        <p>{{ post.user }}</p>
+        <time>{{ post.timestamp }}</time>
+      </article>
+      {% endfor %}
+    </div>
+  </body>
+</html>

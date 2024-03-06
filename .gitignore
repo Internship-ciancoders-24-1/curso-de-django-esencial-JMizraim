@@ -1,1 +1,3 @@
 practice/.env
+practice/**/__pycache__
+.vscode/
