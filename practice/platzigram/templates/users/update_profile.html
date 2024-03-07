@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block head_content %}
-<title>@{{ request.user.username }} | Update profile</title>
+<title>@{{ user.username }} | Update profile</title>
 {% endblock %}
 
 {% block container %}
@@ -14,12 +14,12 @@
 
             <h1 class="mt-5">@{{request.user.username}}</h1>
 
-            {% comment %} <form action="{% url 'users:update' %}" method="POST" enctype="multipart/form-data">
+            <form method="POST" action="{% url 'update_profile' %}" enctype="multipart/form-data">
                 {% csrf_token %}
 
                 <div class="media">
                     {% if profile.picture %}
-                        <img src="{{ profile.picture.url }}" class="rounded-circle" height="50" />
+                        <img src="{{ profile.picture.url }}" class="rounded-circle" height="50" width="50" />
                     {% else%}
                         <img src="{% static 'img/default-profile.png' %}" class="rounded-circle" height="50" />
                     {% endif %}
@@ -30,7 +30,7 @@
                     </div>
                 </div>
 
-                {% for error in form.picture.errors %}
+                 {% for error in form.picture.errors %}
                 <div class="alert alert-danger">
                     <b>Picture: </b>{{ error }}
                 </div>
@@ -88,7 +88,7 @@
                 </div>
 
                 <button type="submit" class="btn btn-primary btn-block mt-5">Update info</button>
-            </form> {% endcomment %}
+            </form>
         </div>
     </div>
 </div>

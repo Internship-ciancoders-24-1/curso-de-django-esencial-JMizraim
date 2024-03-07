@@ -41,4 +41,6 @@ urlpatterns = [
     path('users/signup/', users_views.signup, name='signup'),
     path('users/me/profile/', users_views.update_profile, name='update_profile'),
     
+    path('posts/new/', posts_views.create_post, name='create_post')
+    
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
