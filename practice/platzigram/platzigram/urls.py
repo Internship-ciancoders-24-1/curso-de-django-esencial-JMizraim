@@ -20,11 +20,25 @@ from django.urls import path
 from platzigram.views import hello_wold, sorted, say_hi
 from posts import views as posts_views
 from django.conf.urls.static import static
+from django.shortcuts import redirect
+
+from users import views as users_views
+
+def redirectToHome(request):
+    return redirect('posts/')
+
 
 urlpatterns = [
+    path('', redirectToHome),
     path('admin/', admin.site.urls),
-    path('hello-world/', hello_wold),
-    path('sorted', sorted),
-    path('hi/<str:name>/<int:age>/', say_hi),
-    path('posts/', posts_views.list_posts)
+    path('hello-world/', hello_wold, name='hello_world'),
+    path('sorted', sorted, name='sort'),
+    path('hi/<str:name>/<int:age>/', say_hi, name='hi'),
+    path('posts/', posts_views.list_posts, name='feed'),
+    
+    path('users/login/', users_views.login_view, name='login'),
+    path('users/logout/', users_views.logout_view, name='logout'),
+    path('users/signup/', users_views.signup, name='signup'),
+    path('users/me/profile/', users_views.update_profile, name='update_profile'),
+    
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

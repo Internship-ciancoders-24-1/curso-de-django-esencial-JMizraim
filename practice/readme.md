@@ -16,3 +16,9 @@
 - MTV
 - ORM
 - Django admin
+
+# Templates y archivos estáticos
+
+- Templates
+- Implementación de Login, Register y Logout
+- Middlewares
