@@ -30,3 +30,5 @@
 # Vista basada en clases
 
 - Implementación de vistas basadas en clases (Create View, FormView, UpdateView)
+
+# Uso de templates en Django
