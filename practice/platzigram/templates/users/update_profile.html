@@ -14,7 +14,7 @@
 
             <h1 class="mt-5">@{{request.user.username}}</h1>
 
-            <form method="POST" action="{% url 'update_profile' %}" enctype="multipart/form-data">
+            <form method="POST" action="{% url 'users:update_profile' %}" enctype="multipart/form-data">
                 {% csrf_token %}
 
                 <div class="media">

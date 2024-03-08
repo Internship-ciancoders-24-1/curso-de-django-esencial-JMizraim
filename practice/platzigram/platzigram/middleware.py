@@ -12,8 +12,8 @@ class ProfileCompletionMiddleware:
                 profile = request.user.profile
                 if not profile.picture or not profile.biography:
                     #reverse sirve para obtener la url de un nombre de una vista
-                    if request.path not in [reverse('update_profile'), reverse('logout')]:
-                        return redirect('update_profile')
+                    if request.path not in [reverse('users:update_profile'), reverse('users:logout')]:
+                        return redirect('users:update_profile')
 
         response = self.get_response(request)
         return response

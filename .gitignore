@@ -1,4 +1,6 @@
-practice/.env
-practice/**/__pycache__
-practice/**/media
+**/.env
+**/__pycache__
+**/media
+**/db.sqlite3
 .vscode/
+**/migrations

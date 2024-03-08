@@ -1,67 +1,59 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
-from users.models import Profile
-from users.forms import ProfileForm
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.urls import reverse_lazy, reverse
 from users.forms import SignupForm
+from django.views.generic import DetailView, FormView, UpdateView
+from django.contrib.auth.models import User
+from django.contrib.auth import views as auth_views
 
-from django.db.utils import IntegrityError
+from posts.models import Post
+from users.models import Profile
 
-# Create your views here.
-def login_view(request):
-    if(request.method == 'POST'):
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(request, username=username, password=password)
-        if(user):
-            login(request, user)
-            return redirect('feed')
-        else:
-            return render(request, 'users/login.html', {'error': 'Invalid username and password'})
-    return render(request, 'users/login.html')
 
-@login_required
-def logout_view(request):
-    logout(request)
-    return redirect('login')
-
-def signup(request):
-    if(request.method == 'POST'):
-        form = SignupForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('login')
-    else:
-        form = SignupForm()
-            
-    return render(request, 'users/signup.html', {'form': form})
-
-def update_profile(request):
+# from django.db.utils import IntegrityError
+class UserDetailView(LoginRequiredMixin, DetailView):
+    template_name = "users/detail.html"
+    slug_field = "username"
+    slug_url_kwarg = "username"
+    # queryset = User.objects.all()
+    model = User
+    context_object_name = 'user'
     
-    profile = request.user.profile
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user = self.get_object()
+        context['posts'] = Post.objects.filter(user=user).order_by('-created')
+        # es el encargado de hacer la consulta a la bd
+        return context 
+
+class SignupView(FormView):
+    template_name = "users/signup.html"
+    form_class = SignupForm
+    success_url = reverse_lazy("users:login")
     
-    if(request.method == 'POST'):
-        form = ProfileForm(request.POST, request.FILES)
-        
-        if form.is_valid():
-            data = form.cleaned_data
-            
-            profile.website = data['website']
-            profile.biography = data['biography']
-            profile.phone_number = data['phone_number']
-            profile.picture = data['picture']
-            profile.save()
-            
-            return redirect('update_profile')
-            
-        else: 
-            print("Form is not valid!")
-    else: 
-        form = ProfileForm()
-            
-    return render(request=request, 
-                  template_name='users/update_profile.html', context={'profile': profile, 
-                            'user': request.user,
-                            'form': form
-                            })
+    def form_valid(self, form):
+        form.save()
+        return super().form_valid(form)
+
+class LoginView(auth_views.LoginView):
+    template_name = "users/login.html"
+
+
+class LogoutView(LoginRequiredMixin, auth_views.LogoutView):
+    pass
+
+class UpdateProfileView(LoginRequiredMixin, UpdateView):
+    template_name = "users/update_profile.html"
+    model = Profile
+    fields = ['website', 'biography', 'phone_number', 'picture']
+    
+    def get_object(self):
+        return self.request.user.profile
+    
+    def get_success_url(self) -> str:
+        username = self.object.user.username
+        return reverse('users:detail', kwargs={
+            'username': username
+        })

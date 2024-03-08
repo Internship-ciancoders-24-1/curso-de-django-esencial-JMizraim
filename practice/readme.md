@@ -22,3 +22,11 @@
 - Templates
 - Implementación de Login, Register y Logout
 - Middlewares
+
+# Formularios
+
+- Model Forms & Validación de Formularios
+
+# Vista basada en clases
+
+- Implementación de vistas basadas en clases (Create View, FormView, UpdateView)
